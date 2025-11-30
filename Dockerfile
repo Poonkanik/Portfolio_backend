@@ -7,15 +7,14 @@ WORKDIR /app
 # Copy project files
 COPY . .
 
-# Give execute permission to mvnw (IMPORTANT)
+# FIX mvnw PERMISSION
 RUN chmod +x mvnw
 
-# Build the project (skip tests → faster)
+# Build project
 RUN ./mvnw clean install -DskipTests
 
-# Expose port used by Spring Boot
+# Expose port
 EXPOSE 8080
 
-# Run the application
+# Run application
 CMD ["java", "-jar", "target/backend-0.0.1-SNAPSHOT.jar"]
-
