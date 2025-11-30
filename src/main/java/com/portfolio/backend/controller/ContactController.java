@@ -6,7 +6,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/contact")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = {
+        "http://localhost:3000",
+        "https://portfolio-frontend-murex-three.vercel.app"
+})
 public class ContactController {
 
     private final EmailService emailService;
