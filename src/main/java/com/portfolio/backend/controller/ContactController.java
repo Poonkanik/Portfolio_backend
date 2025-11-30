@@ -4,12 +4,9 @@ import com.portfolio.backend.model.ContactMessage;
 import com.portfolio.backend.service.EmailService;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "https://portfolio-frontend-murex-three.vercel.app")
 @RestController
-@RequestMapping("/api/contact")
-@CrossOrigin(origins = {
-        "https://portfolio-frontend-murex-three.vercel.app",
-        "http://localhost:3000"
-})
+@RequestMapping("/api")
 public class ContactController {
 
     private final EmailService emailService;
@@ -18,7 +15,7 @@ public class ContactController {
         this.emailService = emailService;
     }
 
-    @PostMapping
+    @PostMapping("/contact")
     public String handleMessage(@RequestBody ContactMessage msg) {
         emailService.sendContactEmail(
                 msg.getName(),
