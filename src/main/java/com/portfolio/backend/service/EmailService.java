@@ -1,29 +1,43 @@
 package com.portfolio.backend.service;
 
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import java.util.Map;
 
 @Service
 public class EmailService {
 
-    private final JavaMailSender mailSender;
+    @Value("${RESEND_API_KEY}")
+    private String apiKey;
 
-    public EmailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
+    @Value("${EMAIL_TO}")
+    private String emailTo;
 
-    public void sendContactEmail(String senderName, String senderEmail, String message) {
+    @Value("${EMAIL_FROM}")
+    private String emailFrom;
 
-        SimpleMailMessage mail = new SimpleMailMessage();
+    private static final String RESEND_URL = "https://api.resend.com/emails";
 
-        mail.setTo("poonkanikannan@gmail.com");
-        mail.setSubject("Portfolio Contact Message");
-        mail.setText(
-                "Name: " + senderName +
-                        "\nEmail: " + senderEmail +
-                        "\n\nMessage:\n" + message);
+    public void sendContactEmail(String name, String email, String message) {
 
-        mailSender.send(mail);
+        RestTemplate rest = new RestTemplate();
+
+        Map<String, Object> body = Map.of(
+                "from", emailFrom,
+                "to", emailTo,
+                "subject", "New Contact Form Message",
+                "html", "<p><strong>Name:</strong> " + name + "</p>"
+                        + "<p><strong>Email:</strong> " + email + "</p>"
+                        + "<p><strong>Message:</strong><br/>" + message + "</p>");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + apiKey);
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+
+        rest.postForEntity(RESEND_URL, request, String.class);
     }
 }

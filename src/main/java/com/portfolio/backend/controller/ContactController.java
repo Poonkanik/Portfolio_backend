@@ -23,4 +23,5 @@ public class ContactController {
                 msg.getMessage());
         return "Message Sent!";
     }
+
 }
