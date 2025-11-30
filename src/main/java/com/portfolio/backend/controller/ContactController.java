@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/contact")
 @CrossOrigin(origins = {
-        "http://localhost:3000",
-        "https://portfolio-frontend-murex-three.vercel.app"
+        "https://portfolio-frontend-murex-three.vercel.app",
+        "http://localhost:3000"
 })
 public class ContactController {
 
@@ -20,13 +20,10 @@ public class ContactController {
 
     @PostMapping
     public String handleMessage(@RequestBody ContactMessage msg) {
-
-        // Email only (NO DATABASE)
         emailService.sendContactEmail(
                 msg.getName(),
                 msg.getEmail(),
                 msg.getMessage());
-
-        return "Message Sent Successfully!";
+        return "Message Sent!";
     }
 }
