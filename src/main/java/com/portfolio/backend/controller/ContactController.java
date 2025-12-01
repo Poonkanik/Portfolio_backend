@@ -4,7 +4,6 @@ import com.portfolio.backend.model.ContactMessage;
 import com.portfolio.backend.service.EmailService;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "https://kaniportfolio.site")
 @RestController
 @RequestMapping("/api")
 public class ContactController {
